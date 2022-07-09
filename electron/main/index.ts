@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 
@@ -32,6 +32,8 @@ const indexHtml = join(ROOT_PATH.dist, 'index.html')
 async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
+    width: 1200,
+    height: 800,
     icon: join(ROOT_PATH.public, 'favicon.ico'),
     webPreferences: {
       preload,
@@ -39,6 +41,10 @@ async function createWindow() {
       contextIsolation: false,
     },
   })
+
+  win.webContents.openDevTools()
+
+  Menu.setApplicationMenu(null)
 
   if (app.isPackaged) {
     win.loadFile(indexHtml)

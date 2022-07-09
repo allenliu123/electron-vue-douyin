@@ -1,3 +1,5 @@
+src/utils/*.js
+
 # Logs
 logs
 *.log

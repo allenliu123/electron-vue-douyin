@@ -1,7 +1,10 @@
 import { rmSync } from 'fs'
 import { join } from 'path'
 import { defineConfig } from 'vite'
+import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
+import Components from 'unplugin-vue-components/vite'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import electron from 'vite-plugin-electron'
 import pkg from './package.json'
 
@@ -9,8 +12,16 @@ rmSync('dist', { recursive: true, force: true }) // v14.14.0
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'), // resolve path
+    },
+  },
   plugins: [
     vue(),
+    Components({
+      resolvers: [NaiveUiResolver()]
+    }),
     electron({
       main: {
         entry: 'electron/main/index.ts',
