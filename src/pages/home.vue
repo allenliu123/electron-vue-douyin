@@ -10,29 +10,33 @@
   const message = useMessage()
   const searchValue = ref<string>('https://www.douyin.com/user/MS4wLjABAAAA7pHW32vyOVNmUjzv3ze0Dt_9l-czozeBGzWzxmyCZn_3rbgHa_V5OSjUWPxzJQCx')
   const userInfo = ref<any>({
+    sec_uid: '',
     nickname: '',
     signature: '', // 个性签名
     avatar_url: '', // 头像地址
     following_count: 0, // 关注
     mplatform_followers_count: 0, // 粉丝
     total_favorited: '0', // 获赞
-    aweme_count: 0 // 作品数
+    aweme_count: 0, // 作品数
+    extraNow: ''
   })
   const search = async () => {
-    const secId = parseHomeUrl(searchValue.value)
-    if (!secId) {
+    const sec_uid = parseHomeUrl(searchValue.value)
+    if (!sec_uid) {
       message.error('地址解析错误')
       return
     }
-    const info: any = await getUserInfo(secId)
+    const { info, extraNow} = await getUserInfo(sec_uid)
     userInfo.value = {
+      sec_uid: info.sec_uid,
       nickname: info.nickname,
       signature: info.signature, // 个性签名
       avatar_url: 'https://p3-pc.douyinpic.com/aweme/100x100/' + info.avatar_larger.uri, // 头像地址
       following_count: info.following_count, // 关注
       mplatform_followers_count: info.mplatform_followers_count, // 粉丝
       total_favorited: info.total_favorited, // 获赞
-      aweme_count: info.aweme_count // 作品数
+      aweme_count: info.aweme_count, // 作品数
+      extraNow: extraNow
     }
   }
 </script>
@@ -66,7 +70,9 @@
         </div>
       </div>
       <div class="right">
-        <aweme-list></aweme-list>
+        <aweme-list
+          :info="userInfo"
+        ></aweme-list>
       </div>
     </div>
   </div>
@@ -74,10 +80,13 @@
 
 <style lang="less" scoped>
 .page {
-  width: 80%;
+  width: 95%;
+  margin: 0 auto;
   color: white;
 }
 .search-douyin {
+  width: 80%;
+  margin: 0 auto;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -92,6 +101,9 @@
   margin-top: 20px;
   display: flex;
   .left {
+    background-color: #78909032;
+    border-radius: var(--card-border-radius);
+    padding: 20px;
     width: 300px;
     .avatar {
       text-align: center;
@@ -110,6 +122,10 @@
     }
   }
   .right {
+    overflow: auto;
+    margin-left: 20px;
+    background-color: #78909032;
+    border-radius: var(--card-border-radius);
     flex: 1;
   }
 }

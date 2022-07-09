@@ -12,12 +12,15 @@ import home from './pages/home.vue'
 
 <style>
 :root {
-  --darkreader-bgimg--container-background: linear-gradient(180deg, #08091b 80%, rgba(8, 9, 27, 1));
+  --darkreader-container-background: linear-gradient(180deg, #08091b 80%, rgba(8, 9, 27, 1));
+  --card-border-radius: 6px;
 }
-#app {
-  height: 100vh;
-  background: var(--darkreader-bgimg--container-background)
+html {
+  background: var(--darkreader-container-background)
 }
+</style>
+
+<style scoped>
 .container {
   max-width: 1000px;
   margin: 0 auto;
