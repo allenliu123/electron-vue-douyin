@@ -7,7 +7,7 @@ import generateSignature from '../common/generateSignature.js'
  * @param {string} sec_uid 用户 id
  * @returns 用户信息
  */
-export function getUserInfo(sec_uid: string) {
+export function getUserInfo(sec_uid: string): any {
   return new Promise((resolve, reject) => {
     rp({
       method: 'get',

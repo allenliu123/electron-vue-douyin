@@ -26,7 +26,7 @@
       message.error('地址解析错误')
       return
     }
-    const { info, extraNow} = await getUserInfo(sec_uid)
+    const { info, extraNow } = await getUserInfo(sec_uid)
     userInfo.value = {
       sec_uid: info.sec_uid,
       nickname: info.nickname,

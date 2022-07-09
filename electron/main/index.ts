@@ -41,8 +41,8 @@ async function createWindow() {
       contextIsolation: false,
     },
   })
-
-  win.webContents.openDevTools()
+  // 开发环境打开控制台
+  process.env.NODE_ENV === 'development' && win.webContents.openDevTools()
 
   Menu.setApplicationMenu(null)
 
