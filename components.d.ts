@@ -12,5 +12,6 @@ declare module '@vue/runtime-core' {
     NButton: typeof import('naive-ui')['NButton']
     NInput: typeof import('naive-ui')['NInput']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    ShowType: typeof import('./src/components/ShowType.vue')['default']
   }
 }
