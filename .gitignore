@@ -1,4 +1,6 @@
 src/utils/*.js
+data/*
+!.gitkeep
 
 # Logs
 logs

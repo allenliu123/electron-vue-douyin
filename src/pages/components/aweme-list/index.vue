@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref, defineProps, toRefs, onMounted } from 'vue'
+import { useMessage } from 'naive-ui'
 import downloadPng from '../../../assets/download.png'
 import {
-  getVideoList
+  getVideoList,
+  getTrueVideoUrl,
+  download as downloadOne
 } from '../../../utils/douyin'
+const fs = require('fs');
+
 const videoList = ref<any>([])
 const props = defineProps({
   info: {
@@ -59,6 +64,18 @@ onMounted(() => {
   getData(info.value.extraNow)
 })
 
+const message = useMessage()
+const download = async (id: string, nickname: string, desc: string) => {
+  nickname = nickname.replace(/\s|\r|\r\n|\n/g, '-')
+  const url: string = await getTrueVideoUrl(id)
+  if (!fs.existsSync('./data/' + nickname)) {
+    fs.mkdirSync('./data/' + nickname)
+  }
+  message.info('视频文件下载中...')
+  await downloadOne(url, nickname, desc.replace(/\s|\r|\r\n|\n/g, '-'))
+  message.success(`视频文件已经下载到项目根目录 data/${nickname} 文件夹下`)
+}
+
 function loadMore() {
   if (!hasMore) {
     loadAll.value = true
@@ -80,13 +97,13 @@ function loadMore() {
         <div class="video-item" :class="{ mlef: index % 3 !== 0 }">
           <img class="cover-url" :src="item.coverUrl" alt="">
           <div class="mask">
-            <img class="download-icon" :src="downloadPng" alt="">
+            <img class="download-icon" @click="() => download(item.id, info.nickname, item.desc)" :src="downloadPng" alt="">
           </div>
         </div>
       </div>
     </div>
     <div class="loading-box">
-      <div class="loading" v-show="isLoading">loading</div>
+      <div class="loading" v-show="isLoading">加载中...</div>
       <div class="loading" v-show="loadAll">已加载全部</div>
       <div class="loading pointer" v-show="isLoadErr" @click="reLoad">加载错误，点击重试</div>
     </div>

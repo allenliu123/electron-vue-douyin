@@ -1,5 +1,6 @@
 const request = require('request');
 const rp = require('request-promise');
+const fs = require('fs');
 import generateSignature from '../common/generateSignature.js'
 
 /**
@@ -71,6 +72,48 @@ export function getVideoList(sec_uid: string, count: string, max_cursor: string)
         }))
       })
     }).catch(reject)
+  })
+}
+
+/**
+ * 通过视频 id 获得视频无水印真实链接
+ * @param {string} id 视频 id
+ * @returns 视频无水印真实链接
+ */
+export function getTrueVideoUrl(id: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    rp({
+      method: 'get',
+      uri: 'https://www.douyin.com/web/api/v2/aweme/iteminfo/?item_ids=' + id,
+      json: true
+    }).then((res: any) => {
+      let url = res.item_list[0].video.play_addr.url_list[0]
+      const noWaterMarkUrl = url.replace('playwm', 'play')
+      resolve(noWaterMarkUrl)
+    }).catch(reject)
+  })
+}
+
+/**
+ * 下载视频到本地 /data/${nickname} 文件夹下
+ * @param {string} url 视频 url
+ */
+export function download(url: string, nickname: string, filename='filename') {
+  return new Promise((resolve, reject) => {
+    let stream = fs.createWriteStream(`./data/${nickname}/${filename}.mp4`);
+    request({
+      url: url,
+      followRedirect: true,
+      headers: {
+        'User-Agent': 'Request-Promise'
+      }
+    }).pipe(stream).on('close', () => {
+      console.log(filename + ' download success');
+      resolve('')
+    }).on('error', (err: any) => {
+      console.log(err)
+      reject(err)
+    });
   })
 }
 // test
