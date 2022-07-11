@@ -1,8 +1,8 @@
 {
   "name": "electron-vue-douyin",
-  "version": "2.0.0",
+  "version": "0.0.1-alpha.1",
   "main": "dist/electron/main/index.js",
-  "description": "Really simple Electron + Vue + Vite boilerplate.",
+  "description": "使用 electron + vue 3 开发的无水印下载抖音视频工具",
   "author": "allenliu123",
   "license": "MIT",
   "private": true,
