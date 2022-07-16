@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, toRefs, onMounted } from 'vue'
+import { ref, toRefs, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
 import downloadPng from '@/assets/download.png'
 import {

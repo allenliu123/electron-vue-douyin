@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineProps, watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import show1 from '../assets/show1.png'
 import show2 from '../assets/show2.png'
 
