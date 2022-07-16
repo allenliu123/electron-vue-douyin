@@ -5,7 +5,7 @@
   import {
     getUserInfo,
     parseHomeUrl
-  } from '../utils/douyin'
+  } from '@/utils/douyin'
 
   const message = useMessage()
   const searchValue = ref<string>('https://www.douyin.com/user/MS4wLjABAAAA7pHW32vyOVNmUjzv3ze0Dt_9l-czozeBGzWzxmyCZn_3rbgHa_V5OSjUWPxzJQCx')

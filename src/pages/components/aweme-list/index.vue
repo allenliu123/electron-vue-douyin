@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, defineProps, toRefs, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
-import downloadPng from '../../../assets/download.png'
+import downloadPng from '@/assets/download.png'
 import {
   getVideoList,
-  getTrueVideoUrl,
+  getTrueVideoUrl
+} from '@/utils/douyin'
+import {
   download as downloadOne
-} from '../../../utils/douyin'
+} from '@/utils/download'
 const fs = require('fs');
 
 const videoList = ref<any>([])
@@ -50,7 +52,7 @@ const getData = (cursor: string) => {
       loadAll.value = true
     }
     isLoading.value = false
-  }).catch(err => {
+  }).catch(() => {
     isLoading.value = false
     isLoadErr.value = true
   })
@@ -65,15 +67,12 @@ onMounted(() => {
 })
 
 const message = useMessage()
-const download = async (id: string, nickname: string, desc: string) => {
-  nickname = nickname.replace(/\s|\r|\r\n|\n/g, '-')
+const download = async (id: string, desc: string) => {
   const url: string = await getTrueVideoUrl(id)
-  if (!fs.existsSync('./data/' + nickname)) {
-    fs.mkdirSync('./data/' + nickname)
-  }
+  const fileName: string = desc.replace(/\s|\r|\r\n|\n/g, '_') + '.mp4'
   message.info('视频文件下载中...')
-  await downloadOne(url, nickname, desc.replace(/\s|\r|\r\n|\n/g, '-'))
-  message.success(`视频文件已经下载到项目根目录 data/${nickname} 文件夹下`)
+  await downloadOne(url, fileName)
+  message.success(`下载成功`)
 }
 
 function loadMore() {
@@ -97,7 +96,7 @@ function loadMore() {
         <div class="video-item" :class="{ mlef: index % 3 !== 0 }">
           <img class="cover-url" :src="item.coverUrl" alt="">
           <div class="mask">
-            <img class="download-icon" @click="() => download(item.id, info.nickname, item.desc)" :src="downloadPng" alt="">
+            <img class="download-icon" @click="() => download(item.id, item.desc)" :src="downloadPng" alt="">
           </div>
         </div>
       </div>
