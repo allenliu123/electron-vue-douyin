@@ -21,7 +21,7 @@
     "less-loader": "^11.0.0",
     "typescript": "^4.7.3",
     "vite": "^2.9.13",
-    "vite-plugin-electron": "^0.6.2"
+    "vite-plugin-electron": "^0.7.5"
   },
   "env": {
     "VITE_DEV_SERVER_HOST": "127.0.0.1",
