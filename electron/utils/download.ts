@@ -5,19 +5,26 @@ export function initDownload(win) {
   let downloadObj = {
     downloadPath: '', // 要下载的链接或文件
     fileName: '', // 要保存的文件名，需要带文件后缀名
-    savedPath: '' // 要保存的路径
+    savedPath: '', // 要保存的路径
+    downloadList: []
   }
   function resetDownloadObj() {
     downloadObj = {
       downloadPath: '',
       fileName: '',
-      savedPath: ''
+      savedPath: '',
+      downloadList: []
     }
   }
   // 监听渲染进程发出的download事件
   ipcMain.on('download', (evt, args) => {
-    downloadObj.downloadPath = args.downloadPath
-    downloadObj.fileName = args.fileName
+    if (Array.isArray(args)) {
+      downloadObj.downloadPath = ''
+      downloadObj.downloadList = args
+    } else {
+      downloadObj.downloadPath = args.downloadPath
+      downloadObj.fileName = args.fileName
+    }
     let ext = path.extname(downloadObj.fileName)
     let filters = [{ name: '全部文件', extensions: ['*'] }]
     if (ext && ext !== '.') {
@@ -34,8 +41,15 @@ export function initDownload(win) {
       })
       .then((result) => {
         downloadObj.savedPath = result.filePath
+        console.log('11', result)
         if (downloadObj.savedPath) {
-          win.webContents.downloadURL(downloadObj.downloadPath) // 触发will-download事件
+          if (downloadObj.downloadPath) {
+            win.webContents.downloadURL(downloadObj.downloadPath) // 触发will-download事件
+          } else { // 多选下载
+            downloadObj.downloadList.forEach((item: any) => {
+              win.webContents.downloadURL(item.url);
+            })
+          }
         }
       })
       .catch(() => {})
@@ -43,6 +57,7 @@ export function initDownload(win) {
 
   win.webContents.session.on('will-download', (event, item) => {
     //设置文件存放位置
+    console.log(item.getTotalBytes())
     item.setSavePath(downloadObj.savedPath)
     item.on('updated', (event, state) => {
       if (state === 'interrupted') {

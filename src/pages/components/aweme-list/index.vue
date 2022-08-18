@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, toRefs, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
+import useCheckBox from '../../../composable/useCheckBox'
 import downloadPng from '@/assets/download.png'
 import {
   getVideoList,
   getTrueVideoUrl
-} from '@/utils/douyin'
+} from '../../../common/utils/douyin'
 import {
   download as downloadOne
-} from '@/utils/download'
-const fs = require('fs');
+} from '../../../common/utils/download'
 
-const videoList = ref<any>([])
+const videoList = ref<any[]>([])
 const props = defineProps({
   info: {
     type: Object,
@@ -25,6 +25,13 @@ const hasMore = ref<boolean>(false)
 const loadAll = ref<boolean>(false)
 const max_cursor = ref<string>('')
 const isLoadErr = ref<boolean>(false)
+
+const {
+  allCheck,
+  indeterminate,
+  selectIds,
+  onClickDownload
+} = useCheckBox(videoList)
 
 let timer: any = undefined
 const handleScroll = function(e: any) {
@@ -88,13 +95,33 @@ function loadMore() {
 <template>
   <div>
     <div class="header">
-      <div>共 {{ props.info.aweme_count }} 个作品</div>
-      <ShowType class="show-type" :type="1" width="20px"></ShowType>
+      <div class="count">
+        共 {{ props.info.aweme_count }} 个作品
+      </div>
+      <div class="checkbox-all">
+        <n-checkbox
+          v-model:checked="allCheck"
+          :indeterminate="indeterminate"
+        >全选</n-checkbox>
+        已经选中 {{ selectIds.length }} 个
+        <n-button type="primary" @click="onClickDownload">
+          下载
+        </n-button>
+      </div>
+      <ShowType :type="1" width="20px"></ShowType>
     </div>
     <div class="container" @scroll="handleScroll">
       <div v-for="(item, index) in videoList" :key="item.id">
         <div class="video-item" :class="{ mlef: index % 3 !== 0 }">
           <img class="cover-url" :src="item.coverUrl" alt="">
+          <div class="mask-check-icon">
+            <n-checkbox
+              class="check-icon"
+              size="large"
+              v-model:checked="item.checked"
+              :indeterminate="indeterminate"
+            ></n-checkbox>
+          </div>
           <div class="mask">
             <img class="download-icon" @click="() => download(item.id, item.desc)" :src="downloadPng" alt="">
           </div>
@@ -127,10 +154,14 @@ function loadMore() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  div {
+  .count {
     font-size: 1.4em;
     font-weight: bold;
     line-height: 60px;
+  }
+  .checkbox-all {
+    margin-left: 20px;
+    margin-right: auto;
   }
 }
 .pointer {
@@ -149,22 +180,32 @@ function loadMore() {
 .video-item:hover .mask {
   opacity: 1;
 }
-.mask {
-  opacity: 0;
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  transition: opacity 0.5s ease;
+.video-item:hover .mask-check-icon {
+  opacity: 1;
 }
 .cover-url {
   width: 170px;
   height: 300px;
   object-fit: cover;
 }
-.download-icon {
-  width: 34px;
-  height: 34px;
-  cursor: pointer;
+.mask {
+  opacity: 0;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  transition: opacity 0.5s ease;
+  .download-icon {
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+  }
+}
+.mask-check-icon {
+  opacity: 0;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  transition: opacity 0.5s ease;
 }
 .mlef {
   margin-left: 20px;

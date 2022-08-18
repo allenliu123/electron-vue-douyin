@@ -1,7 +1,7 @@
 const request = require('request');
 const rp = require('request-promise');
 const fs = require('fs');
-import generateSignature from '../common/generateSignature.js'
+import generateSignature from './generateSignature.js'
 
 /**
  * 获取用户信息

@@ -13,9 +13,7 @@ rmSync('dist', { recursive: true, force: true }) // v14.14.0
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'), // resolve path
-    },
+    alias: {"@": resolve(__dirname, "src")},
   },
   plugins: [
     vue(),
