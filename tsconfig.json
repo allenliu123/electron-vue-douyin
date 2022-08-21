@@ -17,7 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["./electron/*"],
+  "include": ["./electron/*", "./src/*"],
   "references": [
     { "path": "./tsconfig.node.json" }
   ]

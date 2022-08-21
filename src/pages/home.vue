@@ -1,13 +1,19 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useMessage } from 'naive-ui'
-  import AwemeList from './components/aweme-list/index.vue'
   import {
     getUserInfo,
     parseHomeUrl
   } from '@/common/utils/douyin'
+  import useDownload from '@/composable/useDownload'
+  import AwemeList from './components/aweme-list/index.vue'
+  import DownloadList from './components/download-list/index.vue'
 
   const message = useMessage()
+  const {
+    active,
+    onDownloadBoxImgClick
+  } = useDownload()
   const searchValue = ref<string>('https://www.douyin.com/user/MS4wLjABAAAA7pHW32vyOVNmUjzv3ze0Dt_9l-czozeBGzWzxmyCZn_3rbgHa_V5OSjUWPxzJQCx')
   const userInfo = ref<any>({
     sec_uid: '',
@@ -75,6 +81,10 @@
         ></aweme-list>
       </div>
     </div>
+    <div class="download-box">
+      <img src="@/assets/download-box.png" alt="" @click="onDownloadBoxImgClick">
+    </div>
+    <DownloadList v-model:active="active"></DownloadList>
   </div>
 </template>
 
@@ -127,6 +137,16 @@
     background-color: #78909032;
     border-radius: var(--card-border-radius);
     flex: 1;
+  }
+}
+.download-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  img {
+    width: 48px;
+    height: 48px;
   }
 }
 </style>

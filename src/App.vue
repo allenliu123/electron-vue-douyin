@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import home from './pages/home.vue'
+import { darkTheme } from 'naive-ui'
+import { themeOverrides } from '@/common/style/themeOverrides'
 </script>
 
 <template>
   <div class="container">
-    <n-message-provider>
-      <home></home>
-    </n-message-provider>
+    <n-config-provider :theme="darkTheme" :theme-overrides="themeOverrides">
+      <n-message-provider>
+        <home></home>
+      </n-message-provider>
+    </n-config-provider>
   </div>
 </template>
 
