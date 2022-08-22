@@ -78,7 +78,7 @@ const download = async (id: string, desc: string) => {
   const url: string = await getTrueVideoUrl(id)
   const fileName: string = desc.replace(/\s|\r|\r\n|\n/g, '_') + '.mp4'
   message.info('视频文件下载中...')
-  await downloadOne(url, fileName)
+  await downloadOne(id, url, fileName)
   message.success(`下载成功`)
 }
 

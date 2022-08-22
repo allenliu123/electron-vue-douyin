@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import useDownload from '../../../composable/useDownload';
+import useDownload from '@/composable/useDownload';
 
 const {
   downloadingList,

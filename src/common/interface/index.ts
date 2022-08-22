@@ -7,11 +7,13 @@ export interface VideoItem {
 }
 
 export interface DownloadItem {
+  id: string
   name: string
   progress: number
 }
 
 export interface DownloadedItem {
+  id: string
   name: string
   datetime: string
 }

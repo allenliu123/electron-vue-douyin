@@ -3,6 +3,7 @@ const path = require('path')
 
 export function initDownload(win) {
   let downloadObj = {
+    id: '', // 视频 id
     downloadPath: '', // 要下载的链接或文件
     fileName: '', // 要保存的文件名，需要带文件后缀名
     savedPath: '', // 要保存的路径
@@ -10,6 +11,7 @@ export function initDownload(win) {
   }
   function resetDownloadObj() {
     downloadObj = {
+      id: '',
       downloadPath: '',
       fileName: '',
       savedPath: '',
@@ -22,6 +24,7 @@ export function initDownload(win) {
       downloadObj.downloadPath = ''
       downloadObj.downloadList = args
     } else {
+      downloadObj.id = args.id
       downloadObj.downloadPath = args.downloadPath
       downloadObj.fileName = args.fileName
     }
@@ -55,9 +58,9 @@ export function initDownload(win) {
       .catch(() => {})
   })
 
-  win.webContents.session.on('will-download', (event, item) => {
+  win.webContents.session.on('will-download', (event, item: any) => {
     //设置文件存放位置
-    console.log(item.getTotalBytes())
+    const total = Number(item.getTotalBytes())
     item.setSavePath(downloadObj.savedPath)
     item.on('updated', (event, state) => {
       if (state === 'interrupted') {
@@ -66,7 +69,13 @@ export function initDownload(win) {
         if (item.isPaused()) {
           console.log('Download is paused')
         } else {
+          const received: number = item.getReceivedBytes()
           console.log(`Received bytes: ${item.getReceivedBytes()}`)
+          win.send('downloadingInfo', {
+            id: downloadObj.id,
+            name: downloadObj.fileName,
+            progress: Math.floor((received / total) * 100)
+          })
         }
       }
     })

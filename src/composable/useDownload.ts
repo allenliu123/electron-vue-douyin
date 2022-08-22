@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { DownloadItem, DownloadedItem } from '@/common/interface/index'
+const { ipcRenderer } = window.require('electron')
 
 export default function useDownload() {
   const active = ref<boolean>(false)
@@ -8,13 +9,18 @@ export default function useDownload() {
     active.value = !active.value
   }
 
-  const downloadingList = ref<DownloadItem[]>([{
-    name: '11312.mp4',
-    progress: 10
-  }, {
-    name: '3s.mp4',
-    progress: 20
-  }])
+  ipcRenderer.on('downloadingInfo', (e, info) => {
+    console.log(info)
+    let find = false
+    const item = downloadingList.value.find(item => item.id === info.id)
+    if (item) {
+      item.progress = info.progress
+    } else {
+      downloadingList.value.push(info)
+    }
+  })
+
+  const downloadingList = ref<DownloadItem[]>([])
 
   const downloadedList = ref<DownloadedItem[]>([{
     name: '123.mp4',
