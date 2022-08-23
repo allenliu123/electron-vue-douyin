@@ -15,5 +15,6 @@ export interface DownloadItem {
 export interface DownloadedItem {
   id: string
   name: string
+  path: string
   datetime: string
 }

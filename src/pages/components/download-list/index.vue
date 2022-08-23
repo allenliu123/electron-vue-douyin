@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import useDownload from '@/composable/useDownload';
+import { openFile } from '@/common/utils/file'
 
 const {
   downloadingList,
@@ -38,12 +39,12 @@ const modelActive = computed({
           <n-tab-pane name="downloaded" tab="已下载">
             <div class="list-item" v-for="item in downloadedList">
               <div class="flex-between">
-                <div>
+                <div style="flex: 1;">
                   <div style="font-weight: bold;">{{ item.name }}</div>
                   <div style="font-size: 12px;">{{ item.datetime }}</div>
                 </div>
                 <div class="floder-icon">
-                  <img src="@/assets/folder.png" alt="" @click="" />
+                  <img src="@/assets/folder.png" alt="" @click="() => openFile(item.path)" />
                 </div>
               </div>
             </div>
@@ -66,6 +67,8 @@ const modelActive = computed({
 .floder-icon {
   width: 24px;
   height: 24px;
+  margin-left: 20px;
+  cursor: pointer;
   img {
     width: 100%;
     height: 100%;

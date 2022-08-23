@@ -25,6 +25,7 @@ const hasMore = ref<boolean>(false)
 const loadAll = ref<boolean>(false)
 const max_cursor = ref<string>('')
 const isLoadErr = ref<boolean>(false)
+const downloadedList: string[] = []
 
 const {
   allCheck,
@@ -77,9 +78,13 @@ const message = useMessage()
 const download = async (id: string, desc: string) => {
   const url: string = await getTrueVideoUrl(id)
   const fileName: string = desc.replace(/\s|\r|\r\n|\n/g, '_') + '.mp4'
-  message.info('视频文件下载中...')
-  await downloadOne(id, url, fileName)
-  message.success(`下载成功`)
+  if (downloadedList.includes(id)) {
+    message.info('该文件已经下载，请在下载列表查看')
+  } else {
+    downloadedList.push(id)
+    downloadOne(id, url, fileName)
+    message.success('已建立下载任务，下载进度请点击右下角查看')
+  }
 }
 
 function loadMore() {
