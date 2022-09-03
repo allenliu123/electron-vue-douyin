@@ -109,7 +109,7 @@ function loadMore() {
           :indeterminate="indeterminate"
         >全选</n-checkbox> -->
         已经选中 {{ selectIds.length }} 个
-        <n-button type="primary" @click="onClickDownload">
+        <n-button type="primary" class="mlef" @click="onClickDownload">
           下载
         </n-button>
       </div>
@@ -119,7 +119,7 @@ function loadMore() {
       <div v-for="(item, index) in videoList" :key="item.id">
         <div class="video-item" :class="{ mlef: index % 3 !== 0 }">
           <img class="cover-url" :src="item.coverUrl" alt="">
-          <div class="mask-check-icon">
+          <div class="mask-check-icon" :class="{ show: item.checked }">
             <n-checkbox
               class="check-icon"
               size="large"
@@ -187,6 +187,9 @@ function loadMore() {
 }
 .video-item:hover .mask-check-icon {
   opacity: 1;
+}
+.show {
+  opacity: 1 !important;
 }
 .cover-url {
   width: 170px;

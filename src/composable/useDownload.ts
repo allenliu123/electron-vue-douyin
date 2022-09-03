@@ -6,13 +6,15 @@ import moment from 'moment'
 export default function useDownload() {
 
   ipcRenderer.on('downloadingInfo', (e, info) => {
-    console.log(info)
     const item = downloadingList.value.find(item => item.id === info.id)
     if (item) {
       item.progress = info.progress
       item.status = info.status
       if (info.status === 'done') {
-        const downloadedItem: DownloadedItem = Object.assign({}, info, { datetime: moment().format('YYYY-MM-DD hh:mm:ss')})
+        const downloadedItem: DownloadedItem = Object.assign({}, info, {
+          path: info.path,
+          datetime: moment().format('YYYY-MM-DD hh:mm:ss')
+        })
         addToDownloaded(downloadedItem)
         downloadingList.value = downloadingList.value.filter(item => item.id !== info.id)
       }

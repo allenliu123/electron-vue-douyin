@@ -19,6 +19,7 @@ export const downloadSelected = (downloadList: { id: string, desc: string }[]) =
   Promise.all(pList).then((res: string[]) => {
     const lst = res.map((item: string, index: number) => {
       return {
+        id: downloadList[index].id,
         url: item,
         fileName: downloadList[index].desc.replace(/\s|\r|\r\n|\n/g, '_') + '.mp4'
       }

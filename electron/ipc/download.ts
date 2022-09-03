@@ -14,8 +14,22 @@ export function initDownload(win) {
   function push(data: DownloadItem[] | DownloadItem) {
     if (Array.isArray(data)) {
       downLoadQueue = downLoadQueue.concat(data)
+      data.forEach((item: DownloadItem) => {
+        win.send('downloadingInfo', {
+          id: item.id,
+          name: item.fileName,
+          status: 'waiting',
+          progress: 0
+        })
+      })
     } else {
       downLoadQueue.push(data)
+      win.send('downloadingInfo', {
+        id: data.id,
+        name: data.fileName,
+        status: 'waiting',
+        progress: 0
+      })
     }
   }
 
@@ -37,9 +51,7 @@ export function initDownload(win) {
           filters,
           defaultPath: downloadItem.fileName
         }).then(result => {
-          console.log(result)
           downloadPath = result.filePath.slice(0, result.filePath.lastIndexOf('\\'))
-          console.log(downloadPath)
           if (downloadPath) {
             win.webContents.downloadURL(downloadItem.url)
           }
@@ -64,14 +76,6 @@ export function initDownload(win) {
     push(args)
     if (!isWorking) {
       startDownload()
-    } else {
-      win.send('downloadingInfo', {
-        id: args.id,
-        name: args.fileName,
-        path: downloadPath + '\\' + args.fileName,
-        status: 'waiting',
-        progress: 0
-      })
     }
   })
 
@@ -92,7 +96,6 @@ export function initDownload(win) {
           win.send('downloadingInfo', {
             id: obj.id,
             name: obj.fileName,
-            path: downloadPath + '\\' + obj.fileName,
             status: 'downloading',
             progress: Math.floor((received / total) * 100)
           })
@@ -115,7 +118,6 @@ export function initDownload(win) {
         win.send('downloadingInfo', {
           id: obj.id,
           name: obj.fileName,
-          path: downloadPath + '\\' + obj.fileName,
           status: 'error',
           progress: 0
         })
