@@ -15,13 +15,9 @@ export default function useDownload() {
     const item = downloadingList.value.find(item => item.id === info.id)
     if (item) {
       item.progress = info.progress
-      if (info.progress === 100) {
-        const downloadedItem: DownloadedItem = {
-          id: info.id,
-          name: info.name,
-          path: info.path,
-          datetime: moment().format('YYYY-MM-DD hh:mm:ss')
-        }
+      item.status = info.status
+      if (info.status === 'done') {
+        const downloadedItem: DownloadedItem = Object.assign({}, info, { datetime: moment().format('YYYY-MM-DD hh:mm:ss')})
         addToDownloaded(downloadedItem)
         downloadingList.value = downloadingList.value.filter(item => item.id !== info.id)
       }

@@ -104,10 +104,10 @@ function loadMore() {
         共 {{ props.info.aweme_count }} 个作品
       </div>
       <div class="checkbox-all">
-        <n-checkbox
+        <!-- <n-checkbox
           v-model:checked="allCheck"
           :indeterminate="indeterminate"
-        >全选</n-checkbox>
+        >全选</n-checkbox> -->
         已经选中 {{ selectIds.length }} 个
         <n-button type="primary" @click="onClickDownload">
           下载

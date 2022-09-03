@@ -23,6 +23,13 @@ const modelActive = computed({
     emit('update:active', newValue)
   }
 })
+
+const map = new Map([
+  ['error', '错误'],
+  ['waiting', '等待中'],
+  ['downloading', '下载中'],
+  ['done', '完成']
+])
 </script>
 
 <template>
@@ -31,12 +38,18 @@ const modelActive = computed({
       <n-drawer-content>
         <n-tabs type="line" animated>
           <n-tab-pane name="downloading" tab="下载中">
+            <div v-if="downloadingList.length === 0">
+              <div style="text-align: center;">空空如也</div>
+            </div>
             <div class="list-item" v-for="item in downloadingList">
               <div>{{ item.name }}</div>
-              <n-progress type="line" :percentage="item.progress" />
+              <n-progress type="line" :percentage="item.progress">{{ map.get(item.status) }}</n-progress>
             </div>
           </n-tab-pane>
           <n-tab-pane name="downloaded" tab="已下载">
+            <div v-if="downloadedList.length === 0">
+              <div style="text-align: center;">空空如也</div>
+            </div>
             <div class="list-item" v-for="item in downloadedList">
               <div class="flex-between">
                 <div style="flex: 1;">

@@ -10,6 +10,7 @@ export interface DownloadItem {
   id: string
   name: string
   progress: number
+  status: string
 }
 
 export interface DownloadedItem {

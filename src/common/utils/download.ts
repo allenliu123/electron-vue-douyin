@@ -5,7 +5,7 @@ import { getTrueVideoUrl } from './douyin'
 export const download = (id: string, url: string, fileName: string) => {
   ipcRenderer.send('download', {
     id,
-    downloadPath: url, // 下载链接
+    url, // 下载链接
     fileName // 下载文件名，需要包含后缀名
   })
 }

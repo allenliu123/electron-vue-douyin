@@ -32,9 +32,10 @@ const url = `http://${process.env['VITE_DEV_SERVER_HOST']}:${process.env['VITE_D
 const indexHtml = join(ROOT_PATH.dist, 'index.html')
 
 async function createWindow() {
+  const isDev = process.env.NODE_ENV === 'development'
   win = new BrowserWindow({
     title: 'Main window',
-    width: 1200,
+    width: isDev ? 1500 : 1200,
     height: 800,
     icon: join(ROOT_PATH.public, 'favicon.ico'),
     webPreferences: {
