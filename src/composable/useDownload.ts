@@ -4,11 +4,6 @@ const { ipcRenderer } = window.require('electron')
 import moment from 'moment'
 
 export default function useDownload() {
-  const active = ref<boolean>(false)
-
-  const onDownloadBoxImgClick = () => {
-    active.value = !active.value
-  }
 
   ipcRenderer.on('downloadingInfo', (e, info) => {
     console.log(info)
@@ -37,8 +32,6 @@ export default function useDownload() {
   const downloadedList = ref<DownloadedItem[]>([])
 
   return {
-    active,
-    onDownloadBoxImgClick,
     downloadingList,
     downloadedList
   }

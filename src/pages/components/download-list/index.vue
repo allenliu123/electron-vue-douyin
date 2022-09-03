@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref } from 'vue';
 import useDownload from '@/composable/useDownload';
 import { openFile } from '@/common/utils/file'
 
@@ -7,22 +7,8 @@ const {
   downloadingList,
   downloadedList
 } = useDownload()
-const props = defineProps({
-  active: {
-    type: Boolean,
-    default: false
-  }
-})
-const emit = defineEmits(['update:active'])
-const modelActive = computed({
-  get() {
-    return props.active
-  },
-  set(newValue) {
-    console.log(newValue)
-    emit('update:active', newValue)
-  }
-})
+
+const active = ref<boolean>(false)
 
 const map = new Map([
   ['error', '错误'],
@@ -34,7 +20,12 @@ const map = new Map([
 
 <template>
   <div>
-    <n-drawer v-model:show="modelActive" :width="400" placement="right">
+    <div class="download-box">
+      <n-badge :value="downloadingList.length" :max="15">
+        <img src="@/assets/download-box.png" alt="" @click="active = true">
+      </n-badge>
+    </div>
+    <n-drawer v-model:show="active" :width="400" placement="right">
       <n-drawer-content>
         <n-tabs type="line" animated>
           <n-tab-pane name="downloading" tab="下载中">
@@ -85,6 +76,16 @@ const map = new Map([
   img {
     width: 100%;
     height: 100%;
+  }
+}
+.download-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  img {
+    width: 48px;
+    height: 48px;
   }
 }
 </style>
