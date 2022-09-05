@@ -50,7 +50,8 @@
       <n-button
         @click="search"
         class="btn"
-        color="#8a2be2">
+        color="#8a2be2"
+        style="color: white;">
         搜索
       </n-button>
     </div>
