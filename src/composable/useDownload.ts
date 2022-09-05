@@ -5,7 +5,7 @@ import moment from 'moment'
 
 export default function useDownload() {
 
-  ipcRenderer.on('downloadingInfo', (e, info) => {
+  ipcRenderer.on('downloadingInfo', (e: any, info: any) => {
     const item = downloadingList.value.find(item => item.id === info.id)
     if (item) {
       item.progress = info.progress

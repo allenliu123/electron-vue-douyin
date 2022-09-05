@@ -20,7 +20,7 @@ export default function useCheckBox(videoList: Ref) {
   }
 
   function clear() {
-    videoList.value.forEach(item => {
+    videoList.value.forEach((item: any) => {
       item.checked = false
     })
   }
