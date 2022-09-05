@@ -44,6 +44,6 @@
     "request-promise": "^4.2.6",
     "unplugin-vue-components": "^0.21.1",
     "vue": "^3.2.36",
-    "vue-tsc": "^0.36.0"
+    "vue-tsc": "^0.40.7"
   }
 }
