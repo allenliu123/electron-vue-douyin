@@ -1,6 +1,6 @@
 {
   "name": "electron-vue-douyin",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-beta.1",
   "main": "dist/electron/main/index.js",
   "description": "使用 electron + vue 3 开发的无水印下载抖音视频工具",
   "author": "allenliu123",
@@ -32,7 +32,8 @@
     "rollup",
     "vite",
     "vue3",
-    "vue"
+    "vue",
+    "naive-ui"
   ],
   "dependencies": {
     "@vicons/ionicons5": "^0.12.0",
